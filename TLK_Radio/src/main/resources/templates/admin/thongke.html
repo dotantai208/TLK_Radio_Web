@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
+  data-template="vertical-menu-template-free" ng-app="admin_thongke">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>Thống kê - TLK Radio</title>
+
+  <meta name="description" content="" />
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Icons. Uncomment required icon fonts -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/asset/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="/asset/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="/asset/css/demo.css" />
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="/asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+  <link rel="stylesheet" href="/asset/vendor/libs/apex-charts/apex-charts.css" />
+
+  <!-- Page CSS -->
+
+  <!-- Helpers -->
+  <script src="/asset/vendor/js/helpers.js"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <script src="/asset/js/js_ad/config.js"></script>
+  <script src="/asset/js/angular/vendor/angular.min.js"></script>
+  <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+</head>
+
+<body ng-controller="ThongkeController">
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside th:replace="~{/admin/_menu :: aside}"></aside>
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav th:replace="~{/admin/_timkiem:: nav}"></nav>
+
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <div class="container-xxl flex-grow-1 container-p-y " style="height: auto;">
+           
+            <div class="row">
+             <div class="col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title d-flex align-items-start justify-content-between">
+                
+                  
+                  </div>
+                  <span class="fw-semibold d-block mb-1">Tổng số bài hát:</span>
+                  <h3 class="card-title mb-2">{{totals.total_songs}}</h3>
+                
+                </div>
+              </div>
+            
+             </div>
+             <div class="col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title d-flex align-items-start justify-content-between">
+                
+                  
+                  </div>
+                  <span class="fw-semibold d-block mb-1">Tổng số tài khoản</span>
+                  <h3 class="card-title mb-2">{{totals.total_accounts}}</h3>
+                
+                </div>
+              </div>
+            
+             </div>
+             <div class="col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title d-flex align-items-start justify-content-between">
+                
+                  
+                  </div>
+                  <span class="fw-semibold d-block mb-1">Tổng số album</span>
+                  <h3 class="card-title mb-2">{{totals.total_albums}}</h3>
+                
+                </div>
+              </div>
+            
+             </div>
+             <div class="col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title d-flex align-items-start justify-content-between">
+                
+                  
+                  </div>
+                  <span class="fw-semibold d-block mb-1">Tổng số chủ đề</span>
+                  <h3 class="card-title mb-2">{{totals.total_topics}}</h3>
+                
+                </div>
+              </div>
+            
+             </div>
+             
+            </div>
+          
+            <div class="nav-align-top mb-4 mt-3">
+              <h3>Thống kê </h3>
+              <ul class="nav nav-tabs nav-fill" role="tablist">
+                 
+                <li class="nav-item">
+                  <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-home" aria-controls="navs-justified-home" aria-selected="true">
+                    <i class="tf-icons bx bx-home"></i> Lượt Nghe
+                   
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false">
+                    <i class="tf-icons bx bx-user"></i> Yêu thích
+                  </button>
+                </li>
+               
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade active show" id="navs-justified-home" role="tabpanel">
+                  <canvas id="viewsChart" width="400" height="120"></canvas>
+                </div>
+                <div class="tab-pane fade" id="navs-justified-profile" role="tabpanel">
+                  <canvas id="favoritesChart" width="400" height="120"></canvas>
+                </div>
+              
+              </div>
+            </div>
+
+            <div class="card p-4 " style="height: auto;">
+              
+              <div class="col-lg-4 mb-4">
+                <div class="input-group">
+                  <input type="text" class="form-control"ng-model="artistSearchQuery" placeholder="Nhập tên nghệ sĩ" aria-label="Recipient's username" aria-describedby="button-addon2" ng-change="searchArtist()">
+                  <button class="btn btn-primary" type="button" id="button-addon2"ng-click="searchArtist()">Tiềm kiếm</button>
+                </div>
+              </div>
+                <div class="table-responsive text-nowrap">
+                  <table class="table">
+                    <thead>
+                      <tr class="text-nowrap">
+                        <th>Tên Nghệ Sĩ</th>
+                        <th>Tổng số Bài Hát</th>
+                        <th>Tổng số Album</th>
+                        <th>Tổng số Lượt Xem</th>
+                        <th>Tổng số Yêu Thích</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="artist in artistStatistics" class="" >
+                        <td  ><div class="text-large text-primary">{{artist[0]}}</div></td>
+                        <td>{{artist[1]}}</td>
+                        <td>{{artist[2]}}</td>
+                        <td>{{artist[3]}}</td>
+                        <td>{{artist[4]}}</td>
+                    </tr>
+                    
+                   
+                    </tbody>
+                  </table>
+                </div>
+           
+              </div>
+           
+
+
+      
+        
+
+          <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+  
+    <div class="layout-overlay layout-menu-toggle"></div>
+    
+  </div>
+
+  </div>
+
+  <div th:replace="~{/admin/_modals:: div}"></div>
+  <!-- / Layout wrapper -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="/asset/js/thongke_admin.js"></script>
+  <script src="/asset/vendor/js/bootstrap.js"></script>
+  <script src="/asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+  <script src="/asset/vendor/js/menu.js"></script>
+  <!-- endbuild -->
+
+  <!-- Vendors JS -->
+  <script src="/asset/vendor/libs/apex-charts/apexcharts.js"></script>
+
+  <!-- Main JS -->
+  <script src="/asset/js/js_ad/main.js"></script>
+
+  <!-- Page JS -->
+  <script src="/asset/js/js_ad/dashboards-analytics.js"></script>
+
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  
+</body>
+
+</html>

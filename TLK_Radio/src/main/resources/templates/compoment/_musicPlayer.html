@@ -1,0 +1,82 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+</head>
+
+<body>
+
+    <div th:fragment="musicPlayer" ng-init="loadTracksFromJSON()">
+        <div class="music-player">
+            <div class="song-bar">
+                <div class="song-infos">
+                    <div class="image-container">
+                        <div class="track-art"
+                            ng-style="{'background-image': 'url(/asset/images/song/' + currentTrack.image + ')'}"></div>
+                    </div>
+                    <div class="song-description">
+                        <p class="title">
+                        <div class="track-name title" ng-bind="currentTrack.name"></div>
+                        </p>
+                        <p class="artist">
+                        <div class="track-artist artist" ng-bind="currentTrack.artists.join(', ')"></div>
+                        </p>
+                    </div>
+                </div>
+                <div class="icons">
+                    <i class="far fa-heart"></i>
+                    <div class="now-playing artist"></div>
+                </div>
+            </div>
+            <div class="progress-controller">
+                <div class="control-buttons">
+                    <div class="random-track" ng-click="randomTrack()">
+                        <i class="fas fa-random" title="Phát ngẫu nhiên"
+                            ng-class="{'randomActive': isRandom, '': !isRandom}"></i>
+                    </div>
+                    <div class="prev-track" ng-click="prevTrack()">
+                        <i class="fas fa-step-backward" title="Trở lại"></i>
+                    </div>
+                    <div class="playpause-track" ng-click="playpauseTrack()">
+                        <i class="fa"
+                            ng-class="{'fa-play-circle fa-2x': !isPlaying, 'fa-pause-circle fa-2x': isPlaying}"></i>
+                    </div>
+                    <div class="next-track" ng-click="nextTrackWithTopic()">
+                        <i class="fas fa-step-forward" title="Tiếp theo"></i>
+                    </div>
+                    <div class="repeat-track" ng-click="repeatTrack()">
+                        <i class="fas fa-undo-alt" title="Phát lại"></i>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="slider_container">
+                        <div class="current-time" ng-bind="currentTime"></div>
+                        <input type="range" min="1" max="100" value="0" class="seek_slider" id="seek_slider"
+                            ng-model="seekSliderValue" ng-change="seekTo()">
+                        <div class="total-duration" ng-bind="totalDuration"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="other-features">
+                <div class="volume-bar">
+                    <i class="fas fa-list-ul"></i>
+                    
+                    <!-- Offcanvas-Music-- -->
+                    <a  data-bs-toggle="offcanvas" href="#offcanvasDark" role="button"
+                        aria-controls="offcanvasExample">
+                        <i class="fas fa-desktop" title="Danh sách phát"></i>
+                    </a>
+                    <i class="fa fa-volume-down"></i>
+                    <input type="range" min="1" max="100" value="99" class="volume_slider" id="volume_slider"
+                        ng-model="volumeSliderValue" ng-change="adjustVolume()">
+                    <i class="fa fa-volume-up"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

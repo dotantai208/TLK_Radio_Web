@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org"  ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+
+    <link rel="stylesheet" href="/asset/css/musicPlayer.css">
+    <link rel="stylesheet" href="/asset/css/main.css">
+    <link rel="stylesheet" href="/asset/css/slideShow.css">
+
+    <link rel="stylesheet" href="/asset/css/songItem.css">
+    <link rel="stylesheet" href="/asset/css/playlist.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+
+    <script src="/asset/js/angular/vendor/angular.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+
+</head>
+
+<body class="" ng-controller="MusicController">
+    <div class="containers ">
+        <div class="row g-0">
+            <div class="col-lg-2">
+                <aside th:replace="~{/compoment/_menu :: aside}"></aside>
+            </div>
+
+            <main class="col-lg-10">
+                <header style="margin-top: 10px;">
+                    <div class="nav-links">
+                        <button class="menu-btn" id="menu-open">
+                            <i class='bx bx-menu'></i>
+                        </button>
+                        <a href="/song">Bài hát</a>
+                        <a href="/artist">Nghệ sĩ</a>
+                        <a href="/playlist">Playlist</a>
+                    </div>
+
+                    <!-- <div class="search" style="width:400px;">
+                        <i class='bx bx-search'></i>
+                        <input type="text" placeholder="Type here to search">
+                    </div> -->
+
+                </header>
+                <div class="row pt-4  ">
+                    <div class="col-lg-8  ">
+
+                        <section class="hero-area">
+                            <div class="hero-slides owl-carousel">
+                                <!-- Single Hero Slide -->
+                                <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                                    <!-- Slide Img -->
+                                    <div class="slide-img bg-img" style="background-image: url(/asset/images/bg-img/bg-1.jpg);">
+                                    </div>
+                                    <!-- Slide Content -->
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="hero-slides-content text-center">
+                                                    <h6 data-animation="fadeInUp" data-delay="100ms">Bài hát mới nhất</h6>
+                                                    <h2 data-animation="fadeInUp" data-delay="300ms">Beyond Time
+                                                        <span>Beyond Time</span></h2>
+                                                    <a data-animation="fadeInUp" data-delay="500ms" href="/song"
+                                                        class="btn oneMusic-btn mt-50">Khám Phá<i
+                                                            class="fa fa-angle-double-right"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Single Hero Slide 
+                                <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                                    
+                                    <div class="slide-img bg-img" style="background-image: url(/asset/images/bg-img/bg-2.jpg);">
+                                    </div>
+                                    
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="hero-slides-content text-center">
+                                                    <h6 data-animation="fadeInUp" data-delay="100ms">Latest album</h6>
+                                                    <h2 data-animation="fadeInUp" data-delay="300ms">Colorlib Music
+                                                        <span>Colorlib Music</span></h2>
+                                                    <a data-animation="fadeInUp" data-delay="500ms" href="#"
+                                                        class="btn oneMusic-btn mt-50">Discover <i
+                                                            class="fa fa-angle-double-right"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             -->
+                            </div>
+                        </section>
+
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="new-hits-area" style="min-height: 80vh;">
+                            <div class="section-heading text-left mb-30 wow fadeInUp mb-4" data-wow-delay="50ms">
+                                <h2>BXH Nhạc Mới</h2>
+                            </div>
+                            <!-- Single Top Item -->
+                            <div class="single-new-item d-flex align-items-center justify-content-between wow fadeInUp"
+                                ng-repeat="track in track5new" data-wow-delay="100ms">
+                                <div class="first-part d-flex align-items-center">
+                                    <div class="thumbnail" ng-click="tracksClickID(track.id)">
+                                        <img ng-src="/asset/images/song/{{track.image}}" alt="">
+                                    </div>
+                                    <div class="content-">
+                                        <h6>{{track.name}}</h6>
+                                        <p>{{track.artists.join(', ')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+               
+
+
+                <section class="oneMusic-buy-now-area has-fluid bg-gray section-padding-100">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-heading style-2">
+
+                                    <h2>Nghệ sĩ mới tham gia</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            
+                            <!-- Single Album Area -->
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-2" ng-repeat="item in artist6new">
+                                <div class="single-album-area wow fadeInUp" data-wow-delay="600ms">
+                                    <div class="album-thumb">
+                                        <a ng-href="/artist/detail/{{item.stageName}}">
+                                            <img ng-src="/asset/images/artist/{{item.image}}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="album-info">
+                                        <a href="#">
+                                            <h5>{{item.stageName}}</h5>
+                                        </a>
+                                        <p>{{item.realName}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="load-more-btn text-center wow fadeInUp" data-wow-delay="300ms">
+                                    <a href="/artist" class="btn oneMusic-btn">Load More <i
+                                            class="fa fa-angle-double-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                 <!-- Offcanvas-Music-- -->
+                 <div th:replace="~{/compoment/_playlistOffCanvas :: playlistOffCanvas}"></div>
+            </main>
+
+        </div>
+
+
+        <div th:replace="~{/compoment/_musicPlayer :: musicPlayer}"></div>
+        
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="/asset/js/musicPlayerControl.js"></script>
+    <script src="/asset/js/main.js"></script>
+
+    
+    <!-- MDB -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+</head>
+
+<body>
+    <aside class="sidebar ">
+        <div class="logo">
+            <button class="menu-btn" id="menu-close">
+                <i class='bx bx-log-out-circle'></i>
+            </button>
+            <i class='bx bx-pulse'></i>
+            <a href="/index">TLK RADIO</a>
+        </div>
+
+        <div class="menu">
+            <h5>Menu</h5>
+            <ul>
+                <li>
+                    <i class='bx bxs-bolt-circle'></i>
+                    <a href="/song">Bài hát</a>
+                </li>
+                <li>
+                    <i class='bx bxs-volume-full'></i>
+                    <a href="/artist">Nghệ sĩ</a>
+                </li>
+                <li>
+                    <i class='bx bxs-album'></i>
+                    <a href="/album">Albums</a>
+                </li>
+
+                <li>
+                    <i class='bx bxs-radio'></i>
+                    <a href="/topic">Chủ đề</a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="menu">
+            <h5>Cá nhân</h5>
+            <ul>
+                <li>
+                    <i class='bx bxs-microphone'></i>
+                    <a href="/playlist">Playlist</a>
+                </li>
+                <li>
+                    <i class='bx bxs-heart'></i>
+                    <a href="/favorite">Bài hát yêu thích</a>
+                </li>
+                <li>
+                    <i class='bx bx-undo'></i>
+                    <a href="/recent">Đã nghe gần đây</a>
+                </li>
+                <!-- <li>
+                    <i class='bx bxs-folder'></i>
+                    <a href="#">Đã tải vể</a>
+                </li> -->
+
+            </ul>
+        </div>
+
+        <div class="menu">
+            <h5>Tài khoản</h5>
+            <ul>
+                <th:block th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <li>
+                        <i class='bx bxs-plus-square'></i>
+                        <a href="/login">Đăng nhập</a>
+                    </li>
+                </th:block>
+                <th:block th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <li>
+                        <i class='bx bxs-caret-right-circle'></i>
+                        <a href="/register">Đăng ký</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <li>
+                        <i class='bx bxs-caret-right-circle'></i>
+                        <a href="/profile">Tài khoản</a>
+                    </li>
+                </th:block>
+
+
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <li>
+                        <i class='bx bxs-caret-right-circle'></i>
+                        <a href="/changePassword">Đổi mật khẩu</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                    <li>
+                        <i class='bx bxs-caret-right-circle'></i>
+                        <a href="/admin/song">Admin Tool</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <li>
+                        <i class='bx bxs-caret-right-circle'></i>
+                        <a href="/logout">Đăng xuất</a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+
+        
+
+
+    </aside>
+</body>
+
+</html>

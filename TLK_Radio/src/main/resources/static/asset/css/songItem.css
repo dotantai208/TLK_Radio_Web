@@ -1,0 +1,174 @@
+/* [Master Stylesheet - v1.0] */
+/* :: 1.0 Import Fonts */
+@import url("https://fonts.googleapis.com/css?family=Archivo+Narrow:400,400i,500,500i,600,600i,700,700i");
+/* :: 2.0 Import All CSS */
+
+
+/* :: 3.0 Base CSS */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Archivo Narrow", sans-serif;
+  font-size: 14px;
+}
+
+.song-item-area {
+  position: relative;
+  z-index: 1;
+  padding: 5px; 
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  border: 1px solid #d8d8d8;
+  background-color: #f5f9fa;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.song-item-are .single-new-item {
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid #d8d8d8;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.song-item-area .single-new-item .content- h6 {
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.song-item-area .single-new-item .content- p {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.song-item-area .single-new-item .thumbnail {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 80px;
+  flex: 0 0 80px;
+  max-width: 80px;
+  width: 80px;
+  margin-right: 20px;
+}
+
+.new-hits-area {
+  position: relative;
+  z-index: 1;
+  padding: 20px 30px 45px 30px;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  border: 1px solid #d8d8d8;
+  background-color: #f5f9fa;
+}
+
+.new-hits-area .single-new-item {
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid #d8d8d8;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.new-hits-area .single-new-item:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.new-hits-area .single-new-item .thumbnail {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 73px;
+  flex: 0 0 73px;
+  max-width: 73px;
+  width: 73px;
+  margin-right: 20px;
+}
+
+.new-hits-area .single-new-item .content- h6 {
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.new-hits-area .single-new-item .content- p {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.new-hits-area .single-new-item .audioplayer {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.new-hits-area .single-new-item .audioplayer-playing .audioplayer-playpause,
+.new-hits-area .single-new-item .audioplayer:not(.audioplayer-playing) .audioplayer-playpause:hover,
+.new-hits-area .single-new-item .audioplayer:not(.audioplayer-playing) .audioplayer-playpause {
+  background: #d6d6d6;
+}
+
+.new-hits-area .single-new-item .audioplayer:not(.audioplayer-playing) .audioplayer-playpause a {
+  border-left: 12px solid #fff;
+}
+
+.new-hits-area .single-new-item .audioplayer-time,
+.new-hits-area .single-new-item .audioplayer-volume,
+.new-hits-area .single-new-item .audioplayer-bar {
+  display: none;
+}
+
+.song-item-area .thumbnail {
+  position: relative;
+}
+
+.song-item-area .thumbnail .play {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  display: none;
+}
+
+/*---------------------------------*/
+.song-item-area .thumbnail:hover .play {
+  display: flex;
+}
+
+/* .playlist-song-item-area.active .thumbnail .play {
+  display: flex;
+}
+
+.playlist-song-item-area.active .thumbnail .play i {
+  display: none;
+} */
+
+
+
+
+.song-item-area.active {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  color: white;
+}
+
+.song-item-area.active .thumbnail .play{
+  display: flex;
+}

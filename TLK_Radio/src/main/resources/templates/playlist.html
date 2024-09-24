@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+
+    <link rel="stylesheet" href="/asset/css/musicPlayer.css">
+    <link rel="stylesheet" href="/asset/css/main.css">
+
+    <link rel="stylesheet" href="/asset/css/songItem.css">
+    <link rel="stylesheet" href="/asset/css/playlist.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+    <!-- Noty -->
+    <!-- Noty CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+
+
+
+    <style>
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+        }
+
+        .toggle-switch input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle-switch label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch input[type="checkbox"]:checked+label {
+            background-color: #7e2ec0;
+        }
+
+        .toggle-switch label::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: white;
+            transition: left 0.3s ease;
+        }
+
+        .toggle-switch input[type="checkbox"]:checked+label::after {
+            left: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+            background: #fff;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            /* Đặt chiều cao cố định */
+            overflow: hidden;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Đảm bảo hình ảnh không bị biến dạng */
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.1);
+            /* Zoom hình ảnh khi hover vào card */
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #8d34d6;
+            font-weight: bold;
+            white-space: nowrap;
+            /* Ngăn chặn xuống hàng */
+            overflow: hidden;
+            /* Ẩn phần dư thừa */
+            text-overflow: ellipsis;
+            /* Hiển thị ba chấm khi vượt quá */
+        }
+
+        .card-text {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .gradient-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(to right, #8d34d6, #d63494);
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            overflow: hidden;
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(to right, #d63494, #8d34d6);
+        }
+
+        .gradient-btn .btn-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s ease;
+        }
+
+        .gradient-btn .fas {
+            margin-right: 10px;
+            color: white;
+            transition: transform 0.5s ease, color 0.5s ease;
+        }
+
+        .gradient-btn .text {
+            transition: transform 0.5s ease;
+        }
+
+        .gradient-btn:hover .fas {
+            transform: translateX(750%);
+            color: #FFD700;
+            /* Vàng */
+        }
+
+        .gradient-btn:hover .text {
+            transform: translateX(-30%);
+            color: #FFD700;
+            /* Vàng */
+        }
+
+        :root {
+            --motion-ease: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            --motion-duration: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        .button_ZoomOUT {
+            appearance: none;
+            background: transparent;
+            border: 0;
+            color: #fff;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 500;
+            line-height: 1;
+            padding: 1em 1.5em;
+            position: relative;
+            transition: filter var(--motion-duration);
+        }
+
+        .button_ZoomOUT:hover {
+            filter: brightness(1.1);
+        }
+
+        .button_ZoomOUT:active {
+            filter: brightness(0.9);
+        }
+
+        .button_ZoomOUT>span {
+            display: block;
+            position: relative;
+            transition: transform var(--motion-duration) var(--motion-ease);
+            z-index: 1;
+        }
+
+        .button_ZoomOUT:hover>span {
+            transform: scale(1.05);
+        }
+
+        .button_ZoomOUT:active>span {
+            transform: scale(0.95);
+        }
+
+        .button_ZoomOUT>svg {
+
+            fill: #8e24aa;
+            position: absolute;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+        }
+
+        .button_ZoomOUT>svg>path {
+            transition: var(--motion-duration) var(--motion-ease);
+        }
+
+        .button_ZoomOUT:hover>svg>path {
+            d: path("M0,0 C0,-5 100,-5 100,0 C105,0 105,100 100,100 C100,105 0,105 0,100 C-5,100 -5,0 0,0");
+        }
+
+        .button_ZoomOUT:active>svg>path {
+            d: path("M0,0 C30,10 70,10 100,0 C95,30 95,70 100,100 C70,90 30,90 0,100 C5,70 5,30 0,0");
+        }
+
+
+
+
+
+        /* General styles for the container */
+        .new-hits-area {
+            background-color: #452064;
+            /* Soft purple background */
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            border: 3px outset rgb(112, 24, 153);
+            box-shadow: 1 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Heading style */
+        .section-heading h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #f3e5f5;
+            /* Lighter purple for heading */
+        }
+
+        /* Style for each item */
+        .single-new-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #7e57c2;
+            /* Medium purple background for items */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Hover effect */
+        .single-new-item:hover {
+            background-color: #8e24aa;
+            /* Darker purple on hover */
+            transform: scale(1.02);
+        }
+
+        /* Image styling */
+        /* Cấu hình cho ảnh thumbnail */
+        .thumbnail img {
+            width: 70px;
+            /* Kích thước cố định cho chiều rộng */
+            height: 70px;
+            /* Kích thước cố định cho chiều cao */
+            object-fit: cover;
+            /* Đảm bảo ảnh không bị méo */
+            border-radius: 8px;
+            /* Bo góc ảnh */
+            margin-right: 15px;
+            /* Khoảng cách giữa ảnh và nội dung */
+            border: 2px solid #ffffff;
+            /* Đường viền trắng quanh ảnh */
+            max-width: 100%;
+            /* Đảm bảo ảnh không vượt quá kích thước của khung chứa */
+            max-height: 100%;
+            /* Đảm bảo ảnh không vượt quá kích thước của khung chứa */
+        }
+
+
+        /* Content styling */
+        .content- h6 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .content- p {
+            font-size: 14px;
+            margin: 0;
+            color: #e1bee7;
+            /* Light purple text color */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .thumbnail img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .content- h6 {
+                font-size: 16px;
+            }
+
+            .content- p {
+                font-size: 12px;
+            }
+        }
+
+
+
+        /* TABS*/
+        .nav-pills .nav-link {
+            border-radius: 25px;
+            color: #452064;
+            /* Màu mặc định cho các tab */
+        }
+
+        .nav-pills .nav-link.active {
+            box-shadow: inset 0 0 0.5em 0 rgb(195, 0, 255), 0 0 0.5em 0 rgb(255, 155, 188);
+
+            background-color: #452064;
+            /* Màu nền cho tab đang active */
+            color: #ffffff;
+            /* Màu chữ cho tab đang active */
+        }
+
+        .nav-pills-container {
+            display: flex;
+            justify-content: space-between;
+            /* Phân phối không gian giữa các phần tử */
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            /* Sắp xếp các phần tử con theo hàng ngang */
+            gap: 1rem;
+            /* Khoảng cách giữa các nút bên trái */
+        }
+
+        .nav-right {
+            margin-left: auto;
+            /* Đẩy phần tử này sang bên phải */
+        }
+    </style>
+
+</head>
+
+<body ng-controller="MusicController">
+    <div class="containers ">
+        <div class="row g-0">
+            <div class="col-lg-2">
+                <aside th:replace="~{/compoment/_menu :: aside}"></aside>
+            </div>
+
+            <main class="col-lg-10">
+                <header>
+                    <div class="nav-links">
+                        <button class="menu-btn" id="menu-open">
+                            <i class='bx bx-menu'></i>
+                        </button>
+
+                    </div>
+
+                </header>
+                <div class="row pt-3 ">
+                    <div id="modal_form_vertical_edit" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header ">
+                                    <h4 class="modal-title" style="margin:0 25% 0 30% ;color: #521e7c;">Tạo playlist mới
+                                    </h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form ng-submit="addNewPlaylist()">
+                                    <div class="modal-body mx-5">
+
+                                        <div class="row mt-2">
+                                            <div ng-if="LoginAccount.account.vip && !isVipValid(LoginAccount.account)">
+                                                <div class="col-12 py-2 text-center" style="line-height: 27px;">
+                                                    <b style="font-size: x-large; " class="text-center" >Tài khoản VIP của bạn đã hết hạn</b>
+                                                    <br>
+                                                    <div style="font-size: 15px; color: #A1A1AF;">Vui lòng gia hạn để sử dụng tính năng này </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="!LoginAccount.account.vip && !isVipValid(LoginAccount.account)">
+                                                <div class="col-12 py-2 text-center" style="line-height: 27px;">
+                                                    <b style="font-size: x-large; " class="text-center" >Bạn chưa đăng ký tài khoản VIP</b>
+                                                    <br>
+                                                    <div style="font-size: 15px; color: #A1A1AF;">Vui lòng nâng cấp tài khoản để sử dụng tính năng này</div>
+                                                </div>
+                                            </div>
+                                            <input class="form-control" type="text"
+                                                ng-if="isVipValid(LoginAccount.account)"
+                                                style="border-radius: 20px;background-color: #e7e7e7;border: 2px solid #8d34d6;"
+                                                placeholder="  Nhập tên playlist" ng-model="newPlaylist.name">
+                                            <div class="content col-10" ng-if="isVipValid(LoginAccount.account)">
+                                                <b style="font-size: large;">Công khai</b>
+                                                <br>
+                                                <span style="color: #a1a1a1;">Mọi người có thể nhìn thấy playlist
+                                                    này</span>
+                                            </div>
+                                            <div class="col-2 align-items-center mt-3"
+                                                ng-if="isVipValid(LoginAccount.account)">
+                                                <div class="toggle-switch">
+                                                    <input type="checkbox" id="toggleCheckbox"
+                                                        ng-model="newPlaylist.share">
+                                                    <label for="toggleCheckbox"></label>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="/paymentchoise">
+                                            <button ng-if="!isVipValid(LoginAccount.account)"
+                                                style="border-radius: 20px; margin-right: 9%; margin-left: 9%;background: linear-gradient(to right, #8d34d6, #d63494);color: white;"
+                                                type="button" class="btn form-control">
+                                                <a href="/payment/choise" style="color: white;">
+                                                    <span>Nâng cấp tài khoản </span>
+                                                    <b style="font-size: medium;"> VIP</b>
+                                                    <i class="fa-solid fa-crown fa-rotate-by fa-xl"
+                                                        style="color: #FFD43B; --fa-rotate-angle: 35deg; z-index: -1; margin-left: 2%;"></i>
+                                                </a>
+                                            </button>
+                                        </a>
+                                        <button ng-if="isVipValid(LoginAccount.account)"
+                                            style="border-radius: 20px; margin-right: 12%; margin-left: 12%; background-color: #2d7737; color: white;"
+                                            type="submit" class="btn form-control">
+                                            <span style="font-size: 12px;">Tạo mới</span>
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="col-lg-8  ">
+                        <!-- -------------------------------S-T-A-R---------------------------------- -->
+                        <ul class="nav nav-pills mb-3 nav-pills-container" id="pills-tab" role="tablist">
+                            <li class="nav-item nav-left" role="presentation">
+                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                                    aria-selected="true">
+                                    Tất cả
+                                </button>
+                            </li>
+                            <li class="nav-item nav-left" role="presentation">
+                                <button class="nav-link btn" id="pills-profile-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-profile" type="button" role="tab"
+                                    aria-controls="pills-profile" aria-selected="false">
+                                    PlayList Của Tôi
+                                </button>
+                            </li>
+                            <li class="nav-item nav-right" role="presentation">
+                                <button class="button_ZoomOUT mt-1 me-1" data-bs-toggle="modal"
+                                    data-bs-target="#modal_form_vertical_edit">
+                                    <span>Tạo mới PlayList</span>
+                                    <svg viewBox="-5 -5 110 110" preserveAspectRatio="none" aria-hidden="true">
+                                        <path
+                                            d="M0,0 C0,0 100,0 100,0 C100,0 100,100 100,100 C100,100 0,100 0,100 C0,100 0,0 0,0" />
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+
+                            <!-- TAB 1-->
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                aria-labelledby="pills-home-tab">
+                                <!-- Danh sách Bài hát-->
+                                <div class="row">
+                                    <form ng-submit="searchPlaylistName()">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <div class="form-floating mb-3">
+                                                    <input ng-model="searchText" type="text" class="form-control"
+                                                        id="autoCompleteSong" name="nameSong" placeholder="Tên nghệ sĩ">
+                                                    <label for="autoCompleteSong">Tên playlist</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 mt-1">
+                                                <button type="submit"
+                                                    class="btn btn-light form-control p-3">Tìm</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div ng-if="pagination.currentPagePlaylist.length === 0">
+                                        <h5 style="color: #4f4f4f;">Không tìm thấy kết quả</h5>
+                                    </div>
+
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 "
+                                        ng-repeat="item  in pagination.currentPagePlaylist">
+                                        <div class="card">
+                                            <div class="card-img-wrapper">
+                                                <img class="card-img-top" ng-src="/asset/images/playlist/{{item.image}}"
+                                                    alt="Title" />
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title" style="font-size: 18px;">{{item.name}}</h5>
+                                                <p class="card-text" style="color: #a7a7a7;font-size: small;">Được tạo
+                                                    bởi {{item.account.fullname}}</p>
+                                                <a ng-href="/playlist/detail/{{item.id}}" class="gradient-btn">
+                                                    <span class="btn-content">
+                                                        <i class="fas fa-play"></i>
+                                                        <span class="text">Nghe ngay</span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <nav aria-label="Page navigation example"
+                                        ng-show="pagination.currentPagePlaylist.length != 0">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item"
+                                                ng-class="{ 'disabled': pagination.Pager.CurrentPage == 1 }"
+                                                ng-click="prevPage()">
+                                                <a class="page-link">Trở lại</a>
+                                            </li>
+                                            <li ng-repeat="page in pagination.pages">
+                                                <button class="page-link" ng-click="goToPage(page)">{{ page }}</button>
+                                            </li>
+                                            <li class="page-item"
+                                                ng-class="{ 'disabled': pagination.Pager.CurrentPage >= pagination.Pager.TotalPages }"
+                                                ng-click="nextPage()">
+                                                <a class="page-link">Tiếp theo</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <!-- END TAB 1-->
+
+                            <!-- TAB 2 -->
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                aria-labelledby="pills-profile-tab">
+                                <div ng-if="playlistOfMy.length === 0">
+                                    <h5 style="color: #4f4f4f;">Bạn chưa tạo bất kỳ playlist nào</h5>
+                                 </div>
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 " ng-repeat="item in playlistOfMy">
+                                        <div class="card">
+                                            <div class="card-img-wrapper">
+                                                <img class="card-img-top" ng-src="/asset/images/playlist/{{item.image}}"
+                                                    alt="Title" />
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{item.name}}</h5>
+                                                <p class="card-text" style="color: #a7a7a7;font-size: small;">Được tạo
+                                                    bởi: {{item.account.username}}</p>
+                                                <a href="/playlist/detail/{{item.id}}" class="gradient-btn">
+                                                    <span class="btn-content">
+                                                        <i class="fas fa-play"></i>
+                                                        <span class="text">Listen Now</span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <!-- END TAB 2-->
+                            <div class="tab-pane fade" id="pills-contact" role="tabpanel"
+                                aria-labelledby="pills-contact-tab">...</div>
+                        </div>
+
+
+                        <!-- ------------------------------------ E--N--D----------------------------------->
+
+                    </div>
+
+
+                    <!-- B X H-->
+                    <div class="col-12 col-lg-4">
+                        <div class="new-hits-area">
+                            <div class="section-heading">
+                                <h2>BXH Nhạc Mới</h2>
+                            </div>
+
+                            <div class="single-new-item" ng-repeat="track in track5new">
+                                <div class="thumbnail" ng-click="tracksClickID(track.id)">
+                                    <img ng-src="asset/images/song/{{track.image}}" alt="Sam Smith - Underground">
+                                </div>
+                                <div class="content-">
+                                    <h6>{{track.name}}</h6>
+                                    <p>{{track.artists.join(', ')}}</p>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="new-hits-area mt-4">
+                            <div class="section-heading">
+                                <h2>NGHỆ SĨ NỔI BẬT</h2>
+                            </div>
+
+                            <div class="single-new-item" ng-repeat="track in artist5new">
+                                <div class="thumbnail" ng-click="tracksClickID(track.id)">
+                                    <a ng-href="/artist/detail/{{track.stageName}}">
+                                        <img ng-src="asset/images/artist/{{track.image}}" alt="Sam Smith - Underground">
+                                    </a>
+                                    
+                                </div>
+                                <div class="content-">
+                                    <h6>{{track.stageName}}</h6>
+                                    <p>{{track.artists.join(', ')}}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Offcanvas-Music-- -->
+                    <div th:replace="~{/compoment/_playlistOffCanvas :: playlistOffCanvas}"></div>
+
+        
+                </div>
+
+
+
+
+
+            </main>
+
+        </div>
+
+
+        <div th:replace="~{/compoment/_musicPlayer :: musicPlayer}"></div>
+
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+    <script src="/asset/js/musicPlayerControl.js"></script>
+    <script src="/asset/js/main.js"></script>
+</body>
+
+</html>

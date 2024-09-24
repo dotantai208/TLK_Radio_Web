@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  
+  <style>
+ 
+  </style>
+</head>
+<body>
+
+  <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+    <div class="app-brand demo">
+      <a href="/index" class="app-brand-link">
+    
+       <span  style="font-size: 30px;"> ADMIN</span>
+        <span class="app-brand-logo  demo menu-text fw-bolder ms-2">TLK Radio</span>
+      </a>
+
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+      <i class="bx bx-chevron-left bx-sm align-middle"></i>
+    </a>
+  </div>
+
+  <div class="menu-inner-shadow"></div>
+
+  <ul class="menu-inner py-1">
+    <!-- Dashboard -->
+    <li class="menu-item ">
+      <a href="/admin/report" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Analytics">Thông kê</div>
+      </a>
+    </li>
+
+
+
+
+          
+          <li class="menu-item">
+            <a href="/admin/song" class="menu-link">
+              <i class=' menu-icon bx bxs-coin-stack' ></i>
+              <div data-i18n="Basic">Bài hát</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/admin/album" class="menu-link">
+              <i class='menu-icon bx bxs-medal' ></i>
+              <div data-i18n="Basic">Album</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/admin/Artist" class="menu-link">
+              <i class='menu-icon   bx bx-news'  ></i>
+              <div data-i18n="Basic">Nghệ sĩ</div>
+            </a>
+          </li>
+          <!-- Components -->
+    
+          <!-- Cards -->
+          <li class="menu-item">
+            <a href="/admin/topic" class="menu-link">
+              <i class='menu-icon bx bx-duplicate'  ></i>
+              <div data-i18n="Basic">Chủ đề</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/admin/quangcao" class="menu-link">
+              <i class='menu-icon bx bx-slideshow'></i>
+              <div data-i18n="Basic">Quảng cáo</div>
+            </a>
+          </li>
+         <li class="menu-item ">
+            <a href="/admin/account" class="menu-link">
+              <i class='menu-icon bx bx-face'></i>
+              <div data-i18n="Basic">Tài khoản</div>
+            </a>
+          </li>
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text"></span>
+          </li>
+          <li class="menu-item">
+            <a
+              href="/logout"
+          
+              class="menu-link"
+            >
+            <i class='menu-icon bx bx-log-out' ></i>
+              <div data-i18n="Documentation">Đăng xuất</div>
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+ 
+</body>
+</html>

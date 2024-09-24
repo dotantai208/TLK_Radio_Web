@@ -1,0 +1,109 @@
+
+.playlist-song-item-area {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* border-bottom: 1px solid #d8d8d8; */
+  /* margin-bottom: 10px; */
+  padding: 5px;
+}
+
+.playlist-song-item-area:hover {
+  background-color: #4a474d;
+  border-radius: 5px;
+}
+
+.playlist-song-item-area.active {
+  background-color: #9b4de0;
+  border-radius: 5px;
+  color: white;
+}
+
+
+.playlist-song-item-area .content- h6 {
+  text-transform: none;
+  margin-bottom: 0;
+}
+
+.playlist-song-item-area  .content- p {
+  font-size: 10px;
+  margin-bottom: 0;
+}
+
+.playlist-song-item-area  .thumbnail {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 80px;
+  flex: 0 0 50px;
+  max-width: 50px;
+  width: 50px;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+
+.offcanvas-body {
+  height: 100vh; /* Đảm bảo chiều cao của thẻ main đủ để cuộn nội dung */
+  overflow: auto; /* Đảm bảo nội dung vẫn cuộn được */
+  scrollbar-width: thin; /* Đặt kích thước thanh cuộn mỏng hơn trên Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Đặt màu sắc thanh cuộn trên Firefox */
+}
+
+
+.offcanvas-body::-webkit-scrollbar {
+  height: 8px;
+  overflow: hidden;
+}
+
+.offcanvas-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Màu của thumb (phần có thể kéo của thanh cuộn) */
+.offcanvas-body::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1; /* Tạo khoảng cách giữa thumb và track */
+}
+
+
+.playlist-song-item-area .thumbnail {
+  position: relative;
+}
+
+.playlist-song-item-area .thumbnail .play {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  display: none;
+}
+
+.playlist-song-item-area .thumbnail:hover .play {
+  display: flex;
+}
+
+/* .playlist-song-item-area.active .thumbnail .play {
+  display: flex;
+}
+
+.playlist-song-item-area.active .thumbnail .play i {
+  display: none;
+} */
+
+
+
+
+.playlist-song-item-area.active {
+  background-color: #9b4de0;
+  border-radius: 5px;
+  color: white;
+}
+
+.playlist-song-item-area.active .thumbnail .play{
+  display: flex;
+}

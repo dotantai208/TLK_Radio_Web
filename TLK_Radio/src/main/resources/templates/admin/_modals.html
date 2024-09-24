@@ -1,0 +1,120 @@
+<!-- _modals.html -->
+<div ng-controller="AccountController" >
+    <!-- Modal Cập nhật Thông tin Tài khoản -->
+   <!-- Update Account Information Modal -->
+<!-- Update Account Information Modal -->
+<!-- Update Account Information Modal -->
+<div class="modal fade" id="updateAccountModal" tabindex="-1" aria-labelledby="updateAccountModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="updateAccountModalLabel">Thông tin tài khoản</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form ng-submit="updateProfile()">
+                  <div class="mb-3">
+                      <label for="username" class="form-label">Tên người dùng</label>
+                      <input type="text" class="form-control" id="username" ng-model="loggedInUser.username" readonly>
+                  </div>
+                  <div class="mb-3">
+                      <label for="fullname" class="form-label">Họ và tên</label>
+                      <input type="text" class="form-control" id="fullname" ng-model="loggedInUser.fullname" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="dateOfBirth" class="form-label">Ngày sinh</label>
+                      <input type="date" class="form-control" id="dateOfBirth" ng-model="loggedInUser.dateOfBirth " required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="vip" class="form-label">VIP</label>
+                      <input type="checkbox" class="form-check-input" id="vip" ng-model="loggedInUser.vip">
+                  </div>
+                  <!-- Chỉ hiển thị nếu người dùng là VIP -->
+                  <div class="mb-3" ng-if="loggedInUser.vip">
+                      <label for="currentDateVip" class="form-label">Ngày VIP hiện tại</label>
+                      <input type="text" class="form-control" id="currentDateVip" ng-model="loggedInUser.currentDateVip" readonly >
+                  </div>
+                  <div class="mb-3" ng-if="loggedInUser.vip">
+                      <label for="dateVip" class="form-label">Ngày VIP mới</label>
+                      <input type="date" class="form-control" id="dateVip" ng-model="loggedInUser.dateVip" ng-model-options="{timezone: 'UTC'}">
+                  </div>
+
+                  <div class="text-danger" ng-if="errorMessage">
+                      {{ errorMessage }}
+                  </div>
+                  <div class="mb-3">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                      <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- Modal Đổi Mật khẩu -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePasswordModalTitle">Đổi mật khẩu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body px-5 text-center">
+          <h5 class="mb-3 text-danger" ng-if="errorMessage">{{ errorMessage }}</h5>
+          <h5 class="mb-3 text-success" ng-if="successMessage">{{ successMessage }}</h5>
+          <form name="changePassWordForm" novalidate ng-submit="changePassWord()">
+            <div data-mdb-input-init class="form-outline"
+                 ng-class="{'has-error': changePassWordForm.username.$touched && changePassWordForm.username.$invalid}">
+              <label class="form-label" for="username">Tên đăng nhập</label>
+              <input name="username" type="text" id="username" ng-model="user.username" class="form-control form-control-lg" readonly />
+
+              <div ng-show="changePassWordForm.username.$touched && changePassWordForm.username.$invalid">
+                <span class="text-danger">Tên đăng nhập không được bỏ trống</span>
+              </div>
+            </div>
+
+            <div data-mdb-input-init class="form-outline mt-4"
+                 ng-class="{'has-error': changePassWordForm.currentPassword.$touched && changePassWordForm.currentPassword.$invalid}">
+              <label class="form-label" for="currentPassword">Mật khẩu hiện tại</label>
+              <input name="currentPassword" type="password" id="currentPassword" ng-model="user.currentPassword" class="form-control form-control-lg" required />
+              <div ng-show="changePassWordForm.currentPassword.$touched && changePassWordForm.currentPassword.$invalid">
+                <span class="text-danger">Mật khẩu hiện tại không được bỏ trống</span>
+              </div>
+            </div>
+
+            <div data-mdb-input-init class="form-outline mt-4"
+                 ng-class="{'has-error': changePassWordForm.newPassword.$touched && changePassWordForm.newPassword.$invalid}">
+              <label class="form-label" for="newPassword">Mật khẩu mới</label>
+              <input name="newPassword" type="password" id="newPassword" ng-model="user.newPassword" class="form-control form-control-lg" required />
+              <div ng-show="changePassWordForm.newPassword.$touched && changePassWordForm.newPassword.$invalid">
+                <span class="text-danger">Mật khẩu mới không được bỏ trống</span>
+              </div>
+            </div>
+
+            <div data-mdb-input-init class="form-outline mt-4"
+                 ng-class="{'has-error': changePassWordForm.confirmPassword.$touched && changePassWordForm.confirmPassword.$invalid}">
+              <label class="form-label" for="confirmPassword">Xác nhận mật khẩu</label>
+              <input name="confirmPassword" type="password" id="confirmPassword" ng-model="user.confirmPassword" class="form-control form-control-lg" required />
+              <div ng-show="changePassWordForm.confirmPassword.$touched && changePassWordForm.confirmPassword.$invalid">
+                <span class="text-danger">Xác nhận mật khẩu không được bỏ trống</span>
+              </div>
+            </div>
+
+            <div ng-show="user.newPassword && user.confirmPassword && user.newPassword !== user.confirmPassword" class="text-danger">
+              <span>Mật khẩu mới và xác nhận mật khẩu không khớp</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-3" ng-disabled="changePassWordForm.$invalid || (user.newPassword !== user.confirmPassword)">Lưu</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+  

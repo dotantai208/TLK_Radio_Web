@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecentSONG</title>
+    <link rel="stylesheet" href="/asset/css/musicPlayer.css">
+    <link rel="stylesheet" href="/asset/css/main.css">
+
+    <link rel="stylesheet" href="/asset/css/songItem.css">
+    <link rel="stylesheet" href="/asset/css/playlist.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+    <!-- Noty -->
+    <!-- Noty CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <style>
+        /*body{
+          min-height: 100vh;
+          background-color: #1e1e2f;
+
+      }
+          */
+        /*Header*/
+        .title-head {
+            margin: 0;
+            padding: 0;
+
+            align-items: center;
+            max-height: 15vh;
+            box-sizing: border-box;
+
+        }
+
+        .content-left-header>img {
+            width: 20vh;
+            height: 100%;
+
+        }
+
+        @media (max-width: 1000px) {
+            .content-left-header>img {
+                display: none;
+
+
+            }
+
+            .content-left-header {
+                width: 0px;
+                margin-right: -100px;
+            }
+        }
+
+        .content-right-header {
+            margin: auto;
+
+        }
+
+        .title-love {
+            margin: 0;
+            padding: 0;
+
+            align-items: center;
+            max-height: 15vh;
+            box-sizing: border-box;
+
+        }
+
+        .title-head {
+            margin-bottom: -2%;
+
+            font-size: small;
+        }
+
+        .title-head {
+            margin: 0;
+            padding: 0;
+            font-size: 70px;
+            font-weight: bolder;
+
+            overflow: hidden;
+            max-width: 100%;
+            white-space: nowrap;
+            /* Ngăn chặn xuống hàng */
+            overflow: hidden;
+            /* Ẩn phần dư thừa */
+            text-overflow: ellipsis;
+            /* Hiển thị ba chấm khi vượt quá */
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
+            color: #fff;
+            background: linear-gradient(135deg, #ff4b1f, #1fddff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+
+        /*End Header*/
+
+
+
+
+        .like-button-table {
+            background-color: rgb(212, 75, 75);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+
+        }
+
+        thead {
+            background-color: #3d3d4e;
+
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #3d3d4e;
+
+        }
+
+        tbody tr:hover {
+            background-color: #3d3d4e;
+            cursor: pointer;
+        }
+
+        tbody tr.selected {
+            background-color: #5a5a75;
+        }
+
+        .custom-table {
+            background-color: #1e1e2f;
+            /* Màu nền của bảng */
+            color: #ffffff;
+            /* Màu chữ của bảng */
+        }
+
+        .custom-table thead th {
+            background-color: #3d3d4e;
+            /* Màu nền của tiêu đề bảng */
+        }
+
+        .custom-table tbody tr {
+            background-color: #2c2c3d;
+            /* Màu nền của các hàng trong bảng */
+
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #3d3d4e;
+            /* Màu nền của hàng khi di chuột qua */
+        }
+
+        .custom-table tbody tr.selected {
+            background-color: #5a5a75;
+            /* Màu nền của hàng khi được chọn */
+        }
+
+        .table-row td {
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+        @media (max-width: 768px) {
+            .table-row td {
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    </style>
+
+</head>
+
+<body ng-controller="MusicController">
+    <div class="containers">
+        <div class="row g-0">
+
+            <div class="col-lg-2">
+                <aside th:replace="~{/compoment/_menu :: aside}"></aside>
+            </div>
+
+            <main class="col-lg-10">
+                <header>
+                    <div class="nav-links">
+                        <button class="menu-btn" id="menu-open">
+                            <i class='bx bx-menu'></i>
+                        </button>
+
+                    </div>
+
+                </header>
+
+                <div class="col-lg-12 title-love">
+                    <div class="title-head mt-2">
+                        
+                        <img ng-src="/asset/images/bg-img/anti-clockwise.png" style="width: 70px;height: 70x;                  
+                  margin: 0 1% 0 2%;
+                  padding: 0;
+                  " alt="">
+                        Đã nghe gần đây
+                    </div>
+
+                </div>
+                <div class="col-lg-12">
+                    <table class="custom-table table-hover">
+                        <thead>
+                            <tr>
+
+                                <th style="padding-left: 30px;"> Bài Hát</th>
+                                <th>Tên ca sĩ</th>
+                                <th>Thời gian</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if=" dataRecent.length === 0">
+                                <td colspan="3">Danh sách trống</td>
+                            </tr>
+                            <tr class="table-row" ng-repeat="item in dataRecent">
+                                <td ng-click="tracksClickID(item.song.id)"> 
+                                    <img ng-src="/asset/images/song/{{item.song.image}}"
+                                        style="width: 100px;height: 100px; border-radius: 0.3rem;margin-right: 1rem;"
+                                        alt="">{{item.song.name}}</td>
+                                </td>
+
+                                <td>{{item.song.artists.join(', ')}}</td>
+                                <td>{{item.createDate || 'Không xác định'| date:'dd-MM-yyyy'}}</td>
+                                <td>
+                                    <div class="btn btn-danger" ng-click="deleteRecent(item.id)">Xóa</div>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Offcanvas-Music-- -->
+                <div th:replace="~{/compoment/_playlistOffCanvas :: playlistOffCanvas}"></div>
+        </div>
+        </main>
+
+
+
+
+        <div th:replace="~{/compoment/_musicPlayer :: musicPlayer}"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+    <script src="/asset/js/musicPlayerControl.js"></script>
+    <script src="/asset/js/main.js"></script>
+</body>
+
+</html>

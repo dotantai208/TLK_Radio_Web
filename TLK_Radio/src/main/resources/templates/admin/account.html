@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
+  data-template="vertical-menu-template-free" ng-app="admin">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>Tài khoản - TLK Radio</title>
+
+  <meta name="description" content="" />
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Icons. Uncomment required icon fonts -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/asset/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="/asset/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="/asset/css/demo.css" />
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="/asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+  <link rel="stylesheet" href="/asset/vendor/libs/apex-charts/apex-charts.css" />
+
+  <!-- Page CSS -->
+
+  <!-- Helpers -->
+  <script src="/asset/vendor/js/helpers.js"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <script src="/asset/js/js_ad/config.js"></script>
+  <script src="/asset/js/angular/vendor/angular.min.js"></script>
+  <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+</head>
+
+<body ng-controller="accountController">
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside th:replace="~{/admin/_menu :: aside}"></aside>
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav th:replace="~{/admin/_timkiem:: nav}"></nav>
+
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="row pb-3">
+              <div class="d-flex mb-2 text-light">
+                <div class="p-2">
+                  <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter" ng-click="resetForm()">
+                    <span class="tf-icons bx bx-plus-medical"></span>&nbsp;Thêm tài khoản </button>
+                </div>
+                <div class="modal fade" id="modalCenter" tabindex="0" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered " role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Thêm tài khoản</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-12 mb-3">
+                            <label for="username" class="form-label">Tên Đăng nhập</label>
+                            <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập"
+                              ng-model="form.username" />
+                          </div>
+                          <div class="col-12 mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input type="text" id="password" class="form-control" placeholder="Nhập mật khẩu"
+                              ng-model="form.password" />
+                          </div>
+                          <div class="col-12 mb-3">
+                            <label for="fullname" class="form-label">Họ và tên</label>
+                            <input type="text" id="fullname" class="form-control" placeholder="Nhập Họ và tên"
+                              ng-model="form.fullname" />
+                          </div>
+                          <div class="col-12 mb-3">
+                            <label for="dateOfBirth" class="form-label">Ngày sinh</label>
+                            <input type="date" id="dateOfBirth" class="form-control" placeholder="Nhập Ngày sinh"
+                              ng-model="form.dateOfBirth" />
+                          </div>
+                        </div>
+                   
+                        <!-- <div class="mt-3">
+                          <label for="vip" class="form-label">Nâng cấp VIP</label>
+                          <select id="vip" class="select2 form-select" ng-model="form.vipString" ng-change="updateVip()">
+                            <option value="">Chọn gói nâng cấp</option>
+                            <option value="Đồng">Đồng</option>
+                            <option value="Vàng">Vàng</option>
+                          </select>
+                        </div> -->
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary " ng-click="reset()">Làm mới</button>
+
+                        <button type="button" class="btn btn-primary create-btn" ng-click="create()">Thêm</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Thoát</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+               
+              </div>
+            </div>
+
+
+            <div class="card">
+              <div class="pt-4 card-header col-md-4">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" ng-model="searchQuery" placeholder="Tìm kiếm..." ng-change="search()">
+                  <button type="button" class="btn btn-outline-primary" ng-click="search()">Tìm kiếm</button>
+                </div>
+                </div>
+              <div class="table-responsive text-nowrap card-body">
+                <table class="table  table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Tên Đăng nhập</th>
+                      <th>Họ và tên</th>
+                      <th>Ngày sinh</th>
+                      <th>VIP</th>
+                      <th>Hạn sử dụng</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-border-bottom-0">
+                    <tr ng-repeat="acc in items">
+                      <td>{{acc.username}}</td>
+                      <td>{{acc.fullname}}</td>
+                      <td>{{acc.dateOfBirth | date:'dd-MM-yyyy'}}</td>
+                     
+                      <td>{{acc.vip ? "VIP" : "NOT VIP"}}</td>
+                      <td>{{acc.dateVip===null ? "NOT DATE" :acc.dateVip|  date:'dd-MM-yyyy'}}</td>
+                      <td>
+                        <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal"
+                          data-bs-target="#modalUpdate" ng-click="edit(acc.username)">
+                          <span class="tf-icons"><i class='bx bx-edit'></i></span>
+                        </button>
+                        <button type="button" class="btn btn-icon btn-danger" ng-click="delete(acc.username)">
+                          <span class="tf-icons"><i class='bx bx-trash'></i></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="row mt-3">
+              <div class="col-12 ">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item" ng-class="{disabled: currentPage === 0}">
+                    <a class="page-link" href="#" ng-click="loadPage(0)"><i class="fas fa-caret-left fa-lg" style="color: #000000;"></i></a>
+                  </li>
+                  <li class="page-item" ng-repeat="pageNum in getPageNumbers()"
+                      ng-class="{active: currentPage === pageNum}">
+                    <a class="page-link" href="#" ng-click="loadPage(pageNum)">{{pageNum + 1}}</a>
+                  </li>
+                  <li class="page-item" ng-class="{disabled: currentPage === totalPages - 1}">
+                    <a class="page-link" href="#" ng-click="loadPage(totalPages - 1)"><i class="fas fa-caret-right fa-lg" style="color: #000000;"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            
+            
+            <!--/ Responsive Table -->
+          </div>
+          <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <div class="layout-overlay layout-menu-toggle"></div>
+
+  </div>
+  <!-- / Layout wrapper -->
+  <div th:replace="~{/admin/_modals:: div}"></div>
+  <div class="modal fade" id="modalUpdate" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCenterTitle">Cập nhật</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="username" class="form-label">Tên Đăng nhập</label>
+              <input type="text" id="username" class="form-control" ng-model="form.username"readonly
+                placeholder="Nhập tên đăng nhập" />
+            </div>
+            <div class="col-12 mb-3">
+              <label for="fullname" class="form-label">Họ và tên</label>
+              <input type="text" id="fullname" class="form-control" ng-model="form.fullname"
+                placeholder="Nhập Họ và tên" />
+            </div>
+            <div class="col-12 mb-3">
+              <label for="dateOfBirth" class="form-label">Ngày sinh</label>
+              <input type="date" id="dateOfBirth" class="form-control" value="{{form.dateOfBirth}}" ng-model="form.dateOfBirth"
+                placeholder="Nhập Ngày sinh" />
+            </div>
+        
+
+            <!-- <div class="mt-3">
+              <label for="vip" class="form-label">Nâng cấp VIP</label>
+              <select id="vip" class="select2 form-select" ng-model="form.vipString" ng-change="updateVip()">
+                <option value="">Chọn gói nâng cấp</option>
+                <option value="Đồng">Đồng</option>
+                <option value="Vàng">Vàng</option>
+              </select>
+            </div> -->
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Thoát</button>
+          <button type="button" class="btn btn-primary create-btn" ng-click="update()">Lưu thay đổi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h5 class="modal-title text-danger" id="notificationModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body " style="font-weight: bold;">
+                    <h4 class="text-dark"> {{ notificationMessage }}</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Core JS -->
+  <!-- build:js assets/vendor/js/core.js -->
+  <script src="/asset/js/account_admin.js"></script>
+  <script src="/asset/vendor/js/bootstrap.js"></script>
+  <script src="/asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+  <script src="/asset/vendor/js/menu.js"></script>
+  <!-- endbuild -->
+
+  <!-- Vendors JS -->
+  <script src="/asset/vendor/libs/apex-charts/apexcharts.js"></script>
+
+  <!-- Main JS -->
+  <script src="/asset/js/js_ad/main.js"></script>
+
+  <!-- Page JS -->
+  <script src="/asset/js/js_ad/dashboards-analytics.js"></script>
+
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+ 
+
+</body>
+
+</html>

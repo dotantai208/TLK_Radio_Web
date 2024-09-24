@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
+    data-template="vertical-menu-template-free" ng-app="album">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Album - TLK Radio</title>
+
+    <meta name="description" content="" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/asset/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/asset/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/asset/css/demo.css" />
+
+    <!-- Include the ui-select CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.19.8/select.min.css">
+
+
+
+    <!-- MDB UI Kit JS -->
+
+    <!-- Helpers -->
+    <script src="/asset/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/asset/js/js_ad/config.js"></script>
+    <script src="/asset/js/angular/vendor/angular.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <!-- Include the ui-select CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.19.8/select.min.css">
+
+    <!-- Include the ui-select JS -->
+
+
+</head>
+<style>
+
+.truncate {
+    max-width: 150px;
+    /* Điều chỉnh độ rộng tối đa */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .containercheck{
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+ 
+}
+  .containercheck input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.containercheck input:checked ~ .checkmark {
+  background-color: #2148f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.containercheck input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.containercheck .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+
+</style>
+
+<body ng-controller="albumController">
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
+
+            <aside th:replace="~{/admin/_menu :: aside}"></aside>
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+
+                <nav th:replace="~{/admin/_timkiem:: nav}"></nav>
+
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <div class="row pb-3">
+                            <div class="d-flex mb-2 text-light">
+                                
+                                <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl" role="document">
+                                        <form ng-submit="create()">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title text-dark" id="exampleModalLabel4">Thêm Album
+                                                        mới</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 mb-3">
+                                                            <div class="card border border-primary">
+                                                                <div class="p-2">
+                                                                    <img src="/asset/images/song/banner.png"
+                                                                        alt="user-avatar"
+                                                                        class="rounded img-fluid border-left-0 card-img-top"
+                                                                        id="uploadedAvatar" />
+                                                                </div>
+                                                                <div class="card-body text-center mt-3">
+                                                                    <div class="button-wrapper">
+                                                                        <label for="uploadImage"
+                                                                            class="btn btn-primary me-2 mb-4"
+                                                                            tabindex="0">
+                                                                            <span class="d-none d-sm-block">Tải ảnh
+                                                                                mới</span>
+                                                                            <i
+                                                                                class="bx bx-upload d-block d-sm-none"></i>
+                                                                                <input type="file" id="uploadImage" class="account-file-input img-fluid" hidden accept="image/png, image/jpeg" ng-model="form.imageFile" />
+
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-8">
+                                                            <div class="mb-3">
+                                                                <label for="name" class="form-label">Tên Album</label>
+                                                                <input type="text" class="form-control" id="name"
+                                                                    placeholder="Nhập tên Album" ng-model="form.name" />
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="date_releast" class="form-label">Ngày
+                                                                    ra mắt</label>
+                                                                    <input type="date" class="form-control" id="date_releast" ng-model="form.dateReleast" />
+
+                                                            </div>
+
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label" for="description">Miêu
+                                                                    tả</label>
+                                                                <textarea id="description" class="form-control"
+                                                                    placeholder="" cols="9" rows="7"
+                                                                    ng-model="form.description"></textarea>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="defaultSelect" class="form-label">Nghệ
+                                                                    sĩ</label>
+                                                                <!-- Bind artist model -->
+                                                                <select id="defaultSelect" class="form-select"
+                                                                    ng-model="form.artist"
+                                                                    ng-options="artist.stageName for artist in artists">
+                                                                    <option value="">Không có Nghệ sĩ</option>
+                                                                </select>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Thêm</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+
+
+                                    </div>
+                                </div>
+
+
+
+                              
+                            </div>
+
+                        </div>
+                        <div class="nav-align-top mb-4">
+                            <ul class="nav nav-pills mb-3" role="tablist">
+                              <li class="nav-item">
+                                <button
+                                  type="button"
+                                  class="nav-link active"
+                                  role="tab"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#navs-pills-top-home"
+                                  aria-controls="navs-pills-top-home"
+                                  aria-selected="true"
+                                  ng-click="load_all()"
+                                >
+                                  Tất cả Album
+                                </button>
+                              </li>
+                              <li class="nav-item">
+                                <button
+                                  type="button"
+                                  class="nav-link"
+                                  role="tab"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#navs-pills-top-profile"
+                                  aria-controls="navs-pills-top-profile"
+                                  aria-selected="false"
+                                  ng-click="load_allFalse()"
+                                >
+                                  Khôi phục bài hát
+                                </button>
+                              </li>
+                          
+                            </ul>
+                            <div class="tab-content">
+                              <div class="tab-pane fade show active" id="navs-pills-top-home" role="tabpanel">
+                                <div class="">
+                                    <div class="row">
+                                     <div class="col-md-4">
+                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                             data-bs-target="#modalCenter" ng-click="resetForm()">
+                                             <span class="tf-icons bx bx-plus-medical"></span>&nbsp;Thêm Album
+                                         </button>
+                                         <button type="button" class="btn btn-outline-secondary mt-2" data-bs-toggle="modal"
+                                            data-bs-target="#modalUpdateAlbum" ng-click="">
+                                             <span class="tf-icons bx bx-plus-medical"></span>&nbsp;Thêm bài hát vào Album
+                                        </button>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <div class="input-group mb-3">
+                                             <input type="text" class="form-control" ng-model="searchQuery"
+                                                 placeholder="Tìm kiếm..." ng-change="search()">
+                                             <button type="button" class="btn btn-outline-primary" ng-click="search()">Tìm
+                                                 kiếm</button>
+                                         </div>
+                                     </div>
+                                    </div>
+                                     <div class="table-responsive text-nowrap pt-3">
+                                         <table class="table table-bordered table-hover">
+                                             <thead>
+                                                 <tr>
+         
+                                                     <th>Hình ảnh</th>
+                                                     <th>Tên album</th>
+                                                     <th>Nghệ sĩ</th>
+                                                     <th>Ngày ra mắt</th>
+                                                  
+                                                     <th>Thao tác</th>
+                                                 </tr>
+                                             </thead>
+         
+                                             <tbody class="table-border-bottom-0">
+                                                 <tr ng-repeat="album in items">
+                                                     <td style="width: 50px; height: 80px;">
+                                                         <img ng-src="/asset/images/album/{{album.image}}" alt=""
+                                                             class="img-fluid">
+                                                     </td>
+                                                     <td class="text-primary"
+                                                         style="font-weight: bolder;text-transform:uppercase">{{album.name}}</td>
+                                                     <td>{{album.artist.stageName}}</td>
+                                                     <td>{{album.dateReleast | date:'dd-MM-yyyy'}}</td>
+                                                 
+                                                     <td>
+                                                         <button type="button" class="btn btn-icon btn-primary"
+                                                             ng-click="edit(album.id)" data-bs-toggle="modal"
+                                                             data-bs-target="#modalUpdate">
+                                                             <span class="tf-icons"><i class='bx bx-edit'></i></span>
+                                                         </button>
+                                                         <button type="button" class="btn btn-icon btn-danger"
+                                                             ng-click="delete(album.id)">
+                                                             <span class="tf-icons"><i class='bx bx-trash'></i></span>
+                                                         </button>
+                                                     </td>
+                                                 </tr>
+                                             </tbody>
+         
+         
+         
+                                         </table>
+                                     </div>
+                                 </div>
+         
+                                 <div class="row mt-3">
+                                     <div class="col-12 ">
+                                         <ul class="pagination justify-content-center">
+                                             <li class="page-item" ng-class="{disabled: currentPage === 0}">
+                                                 <a class="page-link" href="#" ng-click="loadPage(0)"><i
+                                                         class="fas fa-caret-left fa-lg" style="color: #000000;"></i></a>
+                                             </li>
+                                             <li class="page-item" ng-repeat="pageNum in getPageNumbers()"
+                                                 ng-class="{active: currentPage === pageNum}">
+                                                 <a class="page-link" href="#" ng-click="loadPage(pageNum)">{{pageNum + 1}}</a>
+                                             </li>
+                                             <li class="page-item" ng-class="{disabled: currentPage === totalPages - 1}">
+                                                 <a class="page-link" href="#" ng-click="loadPage(totalPages - 1)"><i
+                                                         class="fas fa-caret-right fa-lg" style="color: #000000;"></i></a>
+                                             </li>
+                                         </ul>
+                                     </div>
+                                 </div>
+         
+              
+                               
+                              </div>
+                              <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel">
+                                <div class="">
+                                    <div class="row">
+                                    
+                                     <div class="col-md-4">
+                                         <div class="input-group mb-3">
+                                             <input type="text" class="form-control" ng-model="searchQuery"
+                                                 placeholder="Tìm kiếm..." ng-change="searchFalse()">
+                                             <button type="button" class="btn btn-outline-primary" ng-click="searchFalse()">Tìm
+                                                 kiếm</button>
+                                         </div>
+                                     </div>
+                                    </div>
+                                     <div class="table-responsive text-nowrap pt-3">
+                                         <table class="table table-bordered table-hover">
+                                             <thead>
+                                                 <tr>
+         
+                                                     <th>Hình ảnh</th>
+                                                     <th>Tên album</th>
+                                                     <th>Nghệ sĩ</th>
+                                                     <th>Ngày ra mắt</th>
+                                                      <th>Ngày xóa</th>
+                                                     <th>Thao tác</th>
+                                                 </tr>
+                                             </thead>
+         
+                                             <tbody class="table-border-bottom-0">
+                                                 <tr ng-repeat="album in itemsFalse">
+                                                     <td style="width: 50px; height: 80px;">
+                                                         <img ng-src="/asset/images/album/{{album.image}}" alt=""
+                                                             class="img-fluid">
+                                                     </td>
+                                                     <td class="text-primary"
+                                                         style="font-weight: bolder;text-transform:uppercase">{{album.name}}</td>
+                                                     <td>{{album.artist.stageName}}</td>
+                                                     <td>{{album.dateReleast | date:'dd-MM-yyyy'}}</td>
+                                                     <td>{{album.updateDate | date:'dd-MM-yyyy'}}</td>
+                                                     <td>
+                                                        
+                                                         <button type="button" class="btn  btn-primary"
+                                                             ng-click="deleteFalse(album.id)">
+                                                             <span class="tf-icons">Khôi phục</span>
+                                                         </button>
+                                                     </td>
+                                                 </tr>
+                                             </tbody>
+         
+         
+         
+                                         </table>
+                                     </div>
+                                 </div>
+         
+                                 <div class="row mt-3">
+                                     <div class="col-12 ">
+                                         <ul class="pagination justify-content-center">
+                                             <li class="page-item" ng-class="{disabled: currentPageFalse === 0}">
+                                                 <a class="page-link" href="#" ng-click="loadPageFalse(0)"><i
+                                                         class="fas fa-caret-left fa-lg" style="color: #000000;"></i></a>
+                                             </li>
+                                             <li class="page-item" ng-repeat="pageNum in getPageNumbersFalse()"
+                                                 ng-class="{active: currentPageFalse === pageNum}">
+                                                 <a class="page-link" href="#" ng-click="loadPageFalse(pageNum)">{{pageNum + 1}}</a>
+                                             </li>
+                                             <li class="page-item" ng-class="{disabled: currentPageFalse === totalPages - 1}">
+                                                 <a class="page-link" href="#" ng-click="loadPageFalse(totalPages - 1)"><i
+                                                         class="fas fa-caret-right fa-lg" style="color: #000000;"></i></a>
+                                             </li>
+                                         </ul>
+                                     </div>
+                                 </div>
+                              </div>
+                          
+                            </div>
+                          </div>
+                      
+
+                     
+
+
+                        <!--/ Responsive Table -->
+                    </div>
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <div class="layout-overlay layout-menu-toggle"></div>
+
+    </div>
+    <!-- / Layout wrapper -->
+
+    <div class="modal fade" id="modalUpdate" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <form ng-submit="update(form.id)">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title tex-dark" id="exampleModalLabel4">Cập nhật</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- Image and upload section -->
+                            <div class="col-lg-4 mb-3">
+                                <div class="card border border-dark">
+                                    <div class="p-2">
+                                        <img ng-src="{{form.image ? '/asset/images/album/' + form.image : '/asset/images/song/banner.png'}}"
+                                            alt="user-avatar" class="rounded img-fluid card-img-top"
+                                            id="uploadedAvatar2" />
+                                    </div>
+                                    <div class="card-body text-center mt-3">
+                                        <div class="button-wrapper">
+                                            <label for="uploadImage2" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                                <span class="d-none d-sm-block">Upload new photo</span>
+                                                <i class="bx bx-upload d-block d-sm-none"></i>
+                                                <input type="file" id="uploadImage2" class="account-file-input" hidden accept="image/png, image/jpeg">
+
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Form section -->
+                            <div class="col-lg-8">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Tên Album</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Nhập tên Album"
+                                        ng-model="form.name" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="date_releast" class="form-label">Ngày ra mắt</label>
+                                    <input type="date" class="form-control" id="date_releast"
+                                        placeholder="Nhập ngày tạo" ng-model="form.dateReleast" />
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="description">Miêu tả</label>
+                                    <textarea id="description" class="form-control" placeholder="" cols="9" rows="7"
+                                        ng-model="form.description"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="defaultSelect" class="form-label">Nghệ sĩ</label>
+                                    <select id="defaultSelect" class="form-select" ng-model="form.artist"
+                                    ng-options="artist.stageName as artist.stageName for artist in artists">
+                                <option value="">Không có Nghệ sĩ</option>
+                            </select>
+                            
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Notification Modal Template -->
+    <div class="modal fade" id="modalUpdateAlbum" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <form>
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title tex-dark">Update Album</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="mb-3">
+                      <label for="albumSearch" class="form-label">Tìm kiếm</label>
+                      <input type="text" id="albumSearch" class="form-control"  ng-model="searchQuery"
+                        ng-change="searchAlbum()"
+                        placeholder="Nhập tên bài hát, nghệ sĩ...">
+                    </div>
+                    <div class="mb-3">
+                      <label for="defaultSelect" class="form-label">Album</label>
+                      <select id="defaultSelect" class="form-select" ng-model="selectedAlbum"
+                        ng-options="album as album.name for album in albums">
+                        <option value="">Không có Album</option>
+                      </select>
+    
+                    </div>
+    
+                    <div class="table-responsive text-nowrap">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Check</th>
+                            <th>Hình ảnh</th>
+                            <th>Tên bài hát</th>
+                            <th>Album</th>
+                            <th>Nghệ sĩ</th>
+                          
+                           
+    
+    
+                          
+                          </tr>
+                        </thead>
+    
+                        <tbody class="table-border-bottom-0 " >
+    
+                          <div ng-if="getPageNumbersAlbum().length === 0">
+                            <h5 class="text-danger">Không tìm thấy kết quả</h5>
+                          </div>
+                          <tr ng-repeat="song in itemsAlbum" >
+                            <div class="" >
+                              <td for="{{song.id}}">
+                            
+                                <label class="containercheck">
+                                   <input type="checkbox"  ng-click="toggleSongSelection(song.id)" id="{{song.id}}">
+                                     <span class="checkmark"></span>
+                                </label>
+                                 
+                                 
+                               </td>
+                               <td style="width: 50px; height: 80px;">
+                                   <img ng-src="/asset/images/song/{{song.image}}" alt="" class="img-fluid">
+                               </td>
+                               <td class="text-dark" style="font-weight: bolder;">{{song.name}}</td>
+                               <td>{{song.album ? song.album.name : 'Không có Album'}}</td>
+                               <td class="truncate">
+                                   <span ng-repeat="artist in song.artists">
+                                       {{artist.stageName}}<span ng-if="!$last">, </span>
+                                   </span>
+                               </td>
+                            </div>
+                        </tr>
+                        
+                        </tbody>
+    
+    
+                      </table>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-12 ">
+                        <ul class="pagination justify-content-center">
+                          <li class="page-item" ng-class="{disabled: currentPageAlbum === 0}">
+                            <a class="page-link" href="#" ng-click="loadPageAlbum(0)"><i class="fas fa-caret-left fa-lg"
+                                style="color: #000000;"></i></a>
+                          </li>
+                          <li class="page-item" ng-repeat="pageNum in getPageNumbersAlbum()"
+                            ng-class="{active: currentPageAlbum === pageNum}">
+                            <a class="page-link" href="#" ng-click="loadPageAlbum(pageNum)">{{pageNum + 1}}</a>
+                          </li>
+                          <li class="page-item" ng-class="{disabled: currentPageAlbum === totalPagesAlbum - 1}">
+                            <a class="page-link" href="#" ng-click="loadPageAlbum(totalPagesAlbum - 1)"><i
+                                class="fas fa-caret-right fa-lg" style="color: #000000;"></i></a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="updateAlbumSongs()">Lưu</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h5 class="modal-title text-danger" id="notificationModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body " style="font-weight: bold;">
+                    <h4 class="text-dark"> {{ notificationMessage }}</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <div th:replace="~{/admin/_modals:: div}"></div>
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="/asset/js/album_admin.js"></script>
+    <script src="/asset/vendor/js/bootstrap.js"></script>
+    <script src="/asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="/asset/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="/asset/vendor/libs/apex-charts/apexcharts.js"></script>
+
+    <!-- Main JS -->
+    <script src="/asset/js/js_ad/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="/asset/js/js_ad/dashboards-analytics.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+        document.getElementById('uploadImage').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('uploadedAvatar').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    
+     
+    </script>
+
+    <script>
+        document.getElementById('uploadImage2').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('uploadedAvatar2').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+
+
+    </script>
+    <!-- Include the ui-select JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.19.8/select.min.js"></script>
+
+    <!-- Include the AngularJS sanitize library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.2/angular-sanitize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="/asset/js/autoCompleteInput.js"></script>
+
+</body>
+
+</html>

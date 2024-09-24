@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+
+    <link rel="stylesheet" href="/asset/css/musicPlayer.css">
+    <link rel="stylesheet" href="/asset/css/main.css">
+
+    <link rel="stylesheet" href="/asset/css/songItem.css">
+    <link rel="stylesheet" href="/asset/css/playlist.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+    <!-- noty -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+
+    
+    <style>
+        .page-detail {
+            display: flex;
+            padding: 15px;
+            background-color: rgb(41 21 71 / 80%);
+            color: white;
+            border-radius: 10px;
+            min-width: 300px;
+            margin-bottom: 10px;
+        }
+
+        .page-detail img {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+        }
+
+        .page-detail .content {
+            margin-left: 15px;
+        }
+
+        .like {
+            font-size: 20px;
+            color: red;
+           
+            align-self: flex-end;
+            margin-top: auto; /* Đẩy nút like xuống dưới cùng */
+            margin-left: auto; /* Đẩy nút like sang phải */
+        }
+        .content-playlist:hover {
+            background-color: #A1A1AF;
+            border-radius: 10px;
+        }
+        .hover_song{
+           
+        }
+        .hover_song:hover{
+            background-color: #3e3b4d;
+            cursor: pointer;
+            
+        }
+        .playAlbum{
+            background-color: #8d34d6;
+            
+        }
+    </style>
+
+</head>
+
+<body ng-controller="MusicController">
+    <div class="containers ">
+        <div class="row g-0">
+            <div class="col-lg-2">
+                <aside th:replace="~{/compoment/_menu :: aside}"></aside>
+            </div>
+
+            <main class="col-lg-10">
+                <header>
+                    <div class="nav-links">
+                        <button class="menu-btn" id="menu-open">
+                            <i class='bx bx-menu'></i>
+                        </button>
+                    </div>
+
+                </header>
+                <div class="row pt-3 ">
+
+                    <div id="modal_form_vertical_edit" class="modal fade" tabindex="-1" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header ">
+                                    <h4 class="modal-title" style="margin:0 24% 0 30% ;color: #521e7c;">Thêm vào playlist
+                                    </h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form ng-submit="" >
+                                    <div class="header_title_play"
+                                        style="margin-left: 20px;
+                                        font-size: medium;
+                                        font-weight: bolder;
+                                        line-height: 1px;
+                                        color: rgb(255, 0, 0); "                                    
+                                        ng-if="isVipValid(LoginAccount.account)" >
+                                        Chọn playlist
+                                    </div>
+                                    <div class="modal-body">
+                                        <div ng-if="LoginAccount.account.vip && !isVipValid(LoginAccount.account)">
+                                            <div class="col-12 py-2 text-center" style="line-height: 27px;">
+                                                <b style="font-size: x-large; " class="text-center" >Tài khoản VIP của bạn đã hết hạn</b>
+                                                <br>
+                                                <div style="font-size: 15px; color: #A1A1AF;">Vui lòng gia hạn để sử dụng tính năng này </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="!LoginAccount.account.vip && !isVipValid(LoginAccount.account)">
+                                            <div class="col-12 py-2 text-center" style="line-height: 27px;">
+                                                <b style="font-size: x-large; " class="text-center" >Bạn chưa đăng ký tài khoản VIP</b>
+                                                <br>
+                                                <div style="font-size: 15px; color: #A1A1AF;">Vui lòng nâng cấp tài khoản để sử dụng tính năng này</div>
+                                            </div>
+                                        </div>
+                                        <div class="row" ng-if="isVipValid(LoginAccount.account)" >
+                                            <div class="content-playlist col-12 py-2" ng-repeat="item in playlistOfMyForSong" ng-click="addSongForPlaylist(item)"
+                                                    style="padding-left: 60px;box-shadow: 0 1px 0.1px ;"
+                                                    >
+                                                    <i class='bx bxs-playlist bx-tada' style="color: red;"></i>
+                                                <b style="font-size: medium;margin-left: 8px;">{{item.name}}</b>
+                                                
+                                                <br>
+                                            </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        
+                                            <button ng-if="!isVipValid(LoginAccount.account)" 
+                                                style="border-radius: 20px; margin-right: 9%; margin-left: 9%;background: linear-gradient(to right, #8d34d6, #d63494);color: white;"
+                                                type="button" class="btn form-control" ng-click="saveSelectedItems()">
+                                                <a href="/payment/choise" style="color: white;">
+                                                    <span>Nâng cấp tài khoản </span>
+                                                    <b style="font-size: medium;"> VIP</b>
+                                                    <i class="fa-solid fa-crown fa-rotate-by fa-xl"
+                                                        style="color: #FFD43B; --fa-rotate-angle: 35deg; z-index: -1; margin-left: 2%;"></i>
+                                                </a>
+                                                
+                                            </button>
+                                        
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-lg-4 sm-12 sidebar-detail pt-2" style="color: white;background-color: #353555; min-height: 80vh;">
+                                <img ng-src="/asset/images/album/{{AlbumDetail.image}}" alt="">
+                                <h2  class="text-center">{{AlbumDetail.name}}</h2>
+                                
+                                <h4 class="text-center" >{{AlbumDetail.artist.stageName}}</h4>
+                                <div class="playAlbum" 
+                                            style="
+                                            margin: auto;
+                                            
+                                            border-radius: 50px;                                      
+                                            height: 40px;
+                                            width: 40px;
+                                            position: relative;" ng-click="playAllAlbum()" >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                            viewBox="0 0 24 24" style="
+                                                fill: rgb(255, 255, 255);
+                                                transform: scaleY(-1);
+                                                msFilter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+                                                position: absolute;
+                                                top: 50%;
+                                                left: 50%;
+                                                transform: translate(-50%, -50%) scaleY(-1);">
+                                                <path
+                                                    d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                <div class="text-center" style="margin-top: 5px;">
+                                    Ngày phát hành: {{AlbumDetail.dateReleast}}
+                                </div>
+                                    
+                               
+                                <div class="text-center" style="font-size: small;color: #A1A1AF;">
+                                    {{AlbumDetail.description}}
+                                </div>
+                              
+                               
+                               
+                            </div>
+                           <div class="col-8 m-0" style="padding-left: 30px;">
+                            <div style="color: white;">
+                                Số bài hát: {{AlbumSongs.length}}
+                            </div>  
+                           
+                                <div class="row ">
+                                    <div class="col-lg-12 hover_song"  style="display: inline-flex;padding: 5px;"
+                                    ng-repeat="track in AlbumSongs" data-track-id="{{track.id}}" >          
+                                                <div class="thumbnail" ng-click="tracksClickID(track.id)">                                              
+                                                    <img ng-src="/asset/images/song/{{track.image}}"
+                                                        width="50px"
+                                                        alt="{{track.name}}">
+                                                </div> 
+                                                <div class="text" style="color: white;line-height: 20px; margin: 5px 0 0 15px;">
+                                                    <div class="song_name">
+                                                        {{track.name}}
+                                                    </div>
+                                                    <div class="arist_name" style="color: #A1A1AF;">
+                                                        {{track.artists.join(', ')}}
+                                                        
+                                                    </div>
+                                                </div>
+                                            
+                                            
+                                            <div class="button_all" style="margin-left: auto; display: flex;">
+                                                <div class="like" ng-click="addSongInDSP(track.id)" style="margin-right: 5px;">
+                                                    <i class='bx bx-message-square-add' title="Thêm vào danh sách phát"></i>
+                                                </div>
+                                                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                                                    <div class="like" data-bs-toggle="modal"
+                                                    style="margin-right: 5px;"
+                                                    data-bs-target="#modal_form_vertical_edit" ng-click="memorySongs(track)">
+                                                        <i class='bx bx-bookmark-plus' title="Thêm vào playlist"></i>
+                                                    </div>
+                                                </th:block>
+                                                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                                                    <div class="like" ng-click="addFavorite(track.id)">
+                                                        <i class='bx bx-heart-circle' title="Yêu thích"></i>
+                                                    </div>
+                                                </th:block>
+                                            </div>
+                                
+                                    </div>
+        
+                                </div>
+                           </div>
+                        </div>
+
+                        
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="new-hits-area" style="min-height: 80vh;">
+                            <div class="section-heading text-left mb-30 wow fadeInUp mb-4" data-wow-delay="50ms">
+                                <h2>BXH Nhạc Mới</h2>
+                            </div>
+                            <!-- Single Top Item -->
+                            <div class="single-new-item d-flex align-items-center justify-content-between wow fadeInUp"
+                                ng-repeat="track in track5new" data-wow-delay="100ms">
+                                <div class="first-part d-flex align-items-center">
+                                    <div class="thumbnail" ng-click="tracksClickID(track.id)">
+                                        <img ng-src="/asset/images/song/{{track.image}}" alt="">
+                                    </div>
+                                    <div class="content-">
+                                        <h6>{{track.name}}</h6>
+                                        <p>{{track.artists.join(', ')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Offcanvas-Music-- -->
+                    <div th:replace="~{/compoment/_playlistOffCanvas :: playlistOffCanvas}"></div>
+            
+
+                </div>
+
+
+            </main>
+
+        </div>
+
+
+        <div th:replace="~{/compoment/_musicPlayer :: musicPlayer}"></div>
+
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular.min.js"></script>
+    <script src="/asset/js/angular/vendor/angular-route.min.js"></script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+    <script src="/asset/js/musicPlayerControl.js"></script>
+    <script src="/asset/js/main.js"></script>
+</body>
+
+</html>
